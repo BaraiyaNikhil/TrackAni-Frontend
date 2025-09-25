@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="min-h-screen">
+      <main className="min-h-screen bg-slate-300 dark:bg-slate-600">
         <Routes>
           <Route path="/" element={<Home />} />
           {/* <Route path="/animes" element={<Animes />} />
