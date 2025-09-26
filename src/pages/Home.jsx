@@ -1,12 +1,14 @@
 // src/pages/Home.jsx
 import AnimeList from "../components/AnimeList";
 import HeroImg from "../assets/hero_img.jpg"
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+    const navigate = useNavigate();
   return (
     <div className="w-full">
       {/* Hero Banner */}
-      <div className="relative w-full h-[60vh] bg-gradient-to-r from-slate-900 to-slate-800 flex items-center">
+      <div className="relative w-full h-[80vh] bg-gradient-to-r from-slate-900 to-slate-800 flex items-center">
         <div className="absolute inset-0">
           <img
             src={HeroImg}
@@ -21,7 +23,11 @@ export default function Home() {
           <p className="mt-4 text-lg md:text-xl text-slate-200 max-w-xl">
             Your ultimate Anime & TV series tracker — powered by KharvoAnimer.
           </p>
-          <button className="mt-6 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium shadow-lg transition">
+          <button className="mt-6 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium shadow-lg transition"
+          onClick={()=>{
+            navigate("/animes");
+          }}
+          >
             Explore Now
           </button>
         </div>

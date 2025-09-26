@@ -1,24 +1,41 @@
 // src/components/SearchBar.jsx
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
-export default function SearchBar({ placeholder = "Search...", onSearch }) {
-  const [query, setQuery] = useState("");
+/**
+ * Props:
+ *  - placeholder (string)
+ *  - value (string) -> controlled input value from parent
+ *  - onSearch(query) -> called on submit (Enter / button)
+ *  - onChange(query) -> called while typing (debounced 500ms)
+ */
+export default function SearchBar({ placeholder = "Search...", value = "", onSearch, onChange }) {
+  const [query, setQuery] = useState(value);
+
+  // Sync with parent value when it changes (e.g., Clear button)
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
+
+  // Debounced live-change
+  useEffect(() => {
+    if (!onChange) return;
+    const t = setTimeout(() => {
+      onChange(query.trim());
+    }, 500);
+    return () => clearTimeout(t);
+  }, [query, onChange]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (onSearch) {
-      onSearch(query.trim());
-    }
+    e?.preventDefault();
+    if (onSearch) onSearch(query.trim());
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-md relative"
-    >
+    <form onSubmit={handleSubmit} className="w-full max-w-xl relative">
       <input
         type="text"
+        aria-label="Search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
@@ -30,6 +47,7 @@ export default function SearchBar({ placeholder = "Search...", onSearch }) {
       <button
         type="submit"
         className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400"
+        aria-label="submit search"
       >
         <Search size={18} />
       </button>
