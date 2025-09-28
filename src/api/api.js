@@ -2,16 +2,21 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// 🔹 Request interceptor → attach JWT if available
+let logoutHandler = null;
+export const setAuthLogoutHandler = (fn) => {
+  logoutHandler = fn;
+};
+
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("jwt"); // we’ll store token under 'jwt'
+    const token = localStorage.getItem("jwt") || sessionStorage.getItem("jwt");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,15 +25,13 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 🔹 Response interceptor → handle expired/invalid tokens
+// Response interceptor -> global 401 handler
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.warn("JWT expired or unauthorized. Redirecting to login...");
-      // Optionally clear token + redirect:
-      localStorage.removeItem("jwt");
-      // window.location.href = "/login"; // enable if you want auto-redirect
+      console.warn("Unauthorized (401) — token may be invalid/expired.");
+      if (logoutHandler) logoutHandler(); // ✅ call logout from AuthProvider
     }
     return Promise.reject(error);
   }
