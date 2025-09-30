@@ -296,18 +296,12 @@ export default function Dashboard() {
               Member since{" "}
               {user?.createdAt
                 ? new Date(user.createdAt).toLocaleDateString()
-                : "—"}
+                : "long time"}
             </div>
           </div>
         </div>
 
         <div className="flex gap-3">
-          <button
-            onClick={() => navigate("/profile/edit")}
-            className="px-4 py-2 rounded-xl bg-indigo-600 text-white"
-          >
-            Edit Profile
-          </button>
           <button
             onClick={fetchWatchlist}
             className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700"
