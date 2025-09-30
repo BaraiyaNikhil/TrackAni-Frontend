@@ -36,7 +36,7 @@ export default function Header() {
 
             {/* Profile Button */}
             <button
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/dashboard")}
               className="flex items-center gap-2 py-1 px-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5"
             >
               <div className="h-8 w-8 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm">

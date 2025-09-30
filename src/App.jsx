@@ -10,9 +10,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { AuthProvider } from "./contexts/AuthContext";
 import RequireAuth from "./components/RequireAuth";
-// import Club from "./pages/Club";
+import Clubs from "./pages/Clubs";
+import ClubDetails from "./pages/ClubDetails";
 import AboutUs from "./pages/AboutUs";
-// import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/clubs" element={<Clubs />} />
+          <Route path="/clubs/:id" element={<ClubDetails />} />
 
           {/* protected routes */}
           <Route
@@ -37,10 +40,14 @@ function App() {
               </RequireAuth>
             }
           />
-
-          {/* optional future routes */}
-          {/* <Route path="/clubs" element={<Club />} /> */}
-          {/* <Route path="/dashboard" element={<Dashboard /> */}
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </main>
       <Footer />
