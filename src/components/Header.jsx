@@ -67,7 +67,7 @@ export default function Header() {
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
-            className="p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5"
+            className="p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-slate-500"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {open ? (
@@ -82,7 +82,7 @@ export default function Header() {
 
       {/* mobile menu panel */}
       {open && (
-        <div className="md:hidden px-4 pb-4 space-y-2">
+        <div className="md:hidden px-4 pb-4 space-y-2 text-black dark:text-white">
           <Link to="/" onClick={() => setOpen(false)} className="block py-2">Home</Link>
           <Link to="/animes" onClick={() => setOpen(false)} className="block py-2">Animes</Link>
           <Link to="/clubs" onClick={() => setOpen(false)} className="block py-2">Clubs</Link>
