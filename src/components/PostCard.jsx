@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 /* helper to get id from multiple shapes */
 function getId(x) {
@@ -23,7 +22,7 @@ export default function PostCard({
   onDeletePost,
   onDeleteComment,
 }) {
-  const navigate = useNavigate();
+
   const postId = getId(post) || post._id || post.id;
 
   const [showSpoiler, setShowSpoiler] = useState(false);
@@ -31,6 +30,8 @@ export default function PostCard({
   const [commentSpoiler, setCommentSpoiler] = useState(false);
   const [posting, setPosting] = useState(false);
   const [deletingCommentId, setDeletingCommentId] = useState(null);
+
+  useEffect(() => {}, []);
 
   // normalize me id
   const myId = getId(meId) || meId;
@@ -66,12 +67,23 @@ export default function PostCard({
         spoiler: !!commentSpoiler,
       });
 
-      // server should return saved comment. Normalize it:
-      let createdComment = created || {};
+      // server should return saved comment. Normalize it and provide
+      // sensible optimistic fallbacks so the UI updates immediately.
+      let createdComment = created || { content };
 
       // if server returned a bare id or string, wrap it
       if (typeof createdComment === "string") {
         createdComment = { _id: createdComment, content };
+      }
+
+      // ensure content exists (when server returned minimal data)
+      if (!createdComment.content && content) {
+        createdComment.content = content;
+      }
+
+      // ensure a createdAt timestamp for display
+      if (!createdComment.createdAt) {
+        createdComment.createdAt = new Date().toISOString();
       }
 
       // make sure it has an id (fallback to local id)
