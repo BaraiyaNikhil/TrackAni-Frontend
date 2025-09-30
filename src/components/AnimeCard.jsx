@@ -30,7 +30,7 @@ export default function AnimeCard({ anime }) {
         <img
           src={anime.poster}
           alt={anime.title}
-          className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-44 sm:h-56 md:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-3">
           <h3 className="text-sm font-semibold text-white truncate">

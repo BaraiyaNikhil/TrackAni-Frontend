@@ -29,13 +29,13 @@ export default function AnimeList({ title, filter }) {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6 text-black dark:text-white tracking-tight">
+      <h2 className="text-xl sm:text-2xl font-bold mb-6 text-black dark:text-white tracking-tight">
         {title}
       </h2>
       {shows.length === 0 ? (
         <p className="text-slate-500 dark:text-slate-400">No shows found.</p>
       ) : (
-        <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {shows.map((show) => (
             <AnimeCard key={show._id} anime={show} />
           ))}

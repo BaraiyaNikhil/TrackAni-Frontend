@@ -220,12 +220,12 @@ export default function ClubDetails() {
   return (
     <div className="p-6 md:p-10">
       <div className="bg-gradient-to-r from-indigo-600 to-indigo-400 rounded-xl p-6 text-white">
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <h1 className="text-3xl font-bold">{club.name}</h1>
             <p className="mt-2 max-w-2xl">{club.description}</p>
             <div className="mt-3 text-sm opacity-90">
-              {club.members?.length ?? 0} members • created{" "}
+              {club.members?.length ?? 0} members  created {" "}
               {new Date(club.createdAt).toLocaleDateString()}
             </div>
           </div>

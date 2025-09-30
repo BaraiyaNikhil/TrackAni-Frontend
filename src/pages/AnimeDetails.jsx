@@ -190,24 +190,24 @@ export default function AnimeDetails() {
       )}
 
       {/* Banner */}
-      <div className="relative w-full h-[50vh] bg-slate-900">
+      <div className="relative w-full bg-slate-900">
         <img
           src={anime.poster}
           alt={anime.title}
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         />
-        <div className="relative z-10 flex items-center h-full px-8 md:px-16">
-          <div className="flex items-start gap-6">
+        <div className="relative z-10 px-6 md:px-16 py-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <img
               src={anime.poster}
               alt={anime.title}
-              className="w-40 md:w-56 rounded-lg shadow-lg"
+              className="w-36 sm:w-40 md:w-56 rounded-lg shadow-lg flex-shrink-0"
             />
 
             <div className="text-white">
-              <h1 className="text-3xl md:text-5xl font-bold">{anime.title}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold">{anime.title}</h1>
               <p className="mt-2 text-slate-200">
-                {anime.releaseYear} • {anime.totalEpisodes} Episodes
+                {anime.releaseYear} {"\u00B7"} {anime.totalEpisodes} Episodes
               </p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {anime.genres?.map((g) => (
@@ -299,7 +299,7 @@ export default function AnimeDetails() {
           <h3 className="text-xl font-semibold text-black dark:text-white mb-4">
             You might like
           </h3>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="flex gap-4 overflow-x-auto pb-2 touch-pan-x">
             {similar.map((s) => (
               <div
                 key={s._id}

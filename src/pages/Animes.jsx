@@ -121,10 +121,12 @@ export default function Animes() {
     });
   }, [allShows, search, filters, watchlistMap]);
 
+  const [showFilterMobile, setShowFilterMobile] = useState(false);
+
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Sidebar for large screens */}
-      <div className="lg:w-72 px-4 lg:px-6 py-6 hidden lg:block">
+      <div className="lg:w-72 px-4 lg:px-6 py-4 hidden lg:block">
         <Filter onFilterChange={setFilters} />
       </div>
 
@@ -159,8 +161,24 @@ export default function Animes() {
             >
               Clear
             </button>
+
+            {/* Mobile filter toggle */}
+            <button
+              type="button"
+              className="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-sm md:hidden"
+              onClick={() => setShowFilterMobile((s) => !s)}
+            >
+              Filters
+            </button>
           </div>
         </div>
+
+        {/* Mobile filter panel */}
+        {showFilterMobile && (
+          <div className="mb-4 md:hidden">
+            <Filter onFilterChange={setFilters} />
+          </div>
+        )}
 
         {/* Content */}
         {loading ? (
@@ -170,7 +188,7 @@ export default function Animes() {
             No shows found. Try clearing filters or clicking Refresh.
           </p>
         ) : (
-          <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {filteredShows.map((anime) => {
               const id = getIdFromObj(anime._id ?? anime.id ?? anime);
               return <AnimeCard key={id || anime.title} anime={anime} />;
