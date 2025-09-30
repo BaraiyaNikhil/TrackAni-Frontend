@@ -1,4 +1,3 @@
-// src/components/AnimeList.jsx
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import AnimeCard from "./AnimeCard";
@@ -8,11 +7,11 @@ export default function AnimeList({ title, filter }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let endpoint = "/shows"; // default endpoint
+    let endpoint = "/shows";
 
-    // 🔹 you can extend this when backend supports sorting
-    if (filter === "popular") endpoint = "/shows?sort=popular";
-    if (filter === "new") endpoint = "/shows?sort=new";
+    // there is no endpoints for sorting only for future use
+    if (filter === "popular") endpoint = "/shows";
+    if (filter === "new") endpoint = "/shows";
 
     api
       .get(endpoint)

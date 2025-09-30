@@ -1,4 +1,3 @@
-// src/components/ClubCard.jsx
 import { useNavigate } from "react-router-dom";
 
 export default function ClubCard({

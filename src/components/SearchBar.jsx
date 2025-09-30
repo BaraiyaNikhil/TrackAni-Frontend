@@ -1,15 +1,12 @@
-// src/components/SearchBar.jsx
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
-/**
- * Props:
- *  - placeholder (string)
- *  - value (string) -> controlled input value from parent
- *  - onSearch(query) -> called on submit (Enter / button)
- *  - onChange(query) -> called while typing (debounced 500ms)
- */
-export default function SearchBar({ placeholder = "Search...", value = "", onSearch, onChange }) {
+export default function SearchBar({
+  placeholder = "Search...",
+  value = "",
+  onSearch,
+  onChange,
+}) {
   const [query, setQuery] = useState(value);
 
   // Sync with parent value when it changes (e.g., Clear button)

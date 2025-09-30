@@ -1,4 +1,3 @@
-// src/pages/ClubDetails.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -9,14 +8,14 @@ import {
   commentOnPost,
   deletePost,
   deleteComment,
-  deleteClub, // ✅ added
+  deleteClub,
 } from "../services/clubsService";
 import PostCard from "../components/PostCard";
 
 function getId(x) {
   if (!x) return null;
   if (typeof x === "string") return x;
-  return x._id ?? x.id ?? (x._id?.$oid ?? null);
+  return x._id ?? x.id ?? x._id?.$oid ?? null;
 }
 
 export default function ClubDetails() {
@@ -144,8 +143,7 @@ export default function ClubDetails() {
         ...c,
         posts: (c.posts || []).filter(
           (p) =>
-            String(p._id) !== String(postId) &&
-            String(p.id) !== String(postId)
+            String(p._id) !== String(postId) && String(p.id) !== String(postId)
         ),
       }));
     } catch (err) {
@@ -225,7 +223,7 @@ export default function ClubDetails() {
             <h1 className="text-3xl font-bold">{club.name}</h1>
             <p className="mt-2 max-w-2xl">{club.description}</p>
             <div className="mt-3 text-sm opacity-90">
-              {club.members?.length ?? 0} members  created {" "}
+              {club.members?.length ?? 0} members  created{" "}
               {new Date(club.createdAt).toLocaleDateString()}
             </div>
           </div>
@@ -271,8 +269,7 @@ export default function ClubDetails() {
         <div className="flex items-center gap-3 overflow-x-auto py-1">
           {club.members?.map((m) => {
             const mid = getId(m);
-            const display =
-              m.username || m.email || String(mid).slice(0, 6);
+            const display = m.username || m.email || String(mid).slice(0, 6);
             return (
               <div
                 key={mid}

@@ -1,4 +1,3 @@
-// src/components/WatchlistItem.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,13 +9,22 @@ const WATCH_STATUS = [
   { label: "Dropped", value: "dropped" },
 ];
 
-export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, onRemove, busy }) {
+export default function WatchlistItem({
+  item,
+  onUpdateStatus,
+  onUpdateEpisodes,
+  onRemove,
+  busy,
+}) {
   // item shape: { id, status, episodesWatched, show: { title, poster, _id, totalEpisodes, ... } }
   const [updating, setUpdating] = useState(false);
   const [localEpisodes, setLocalEpisodes] = useState(item.episodesWatched ?? 0);
   const navigate = useNavigate();
 
-  useEffect(() => setLocalEpisodes(item.episodesWatched ?? 0), [item.episodesWatched]);
+  useEffect(
+    () => setLocalEpisodes(item.episodesWatched ?? 0),
+    [item.episodesWatched]
+  );
 
   if (!item?.show) return null;
 
@@ -25,7 +33,9 @@ export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, 
 
   const total = Number(show.totalEpisodes ?? show.totalEpisodes ?? NaN);
   const hasTotal = Number.isFinite(total) && total > 0;
-  const percent = hasTotal ? Math.min(100, Math.round((localEpisodes / total) * 100)) : 0;
+  const percent = hasTotal
+    ? Math.min(100, Math.round((localEpisodes / total) * 100))
+    : 0;
 
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
@@ -85,7 +95,9 @@ export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, 
       <div className="flex-1">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-black dark:text-white">{show.title}</h3>
+            <h3 className="text-lg font-semibold text-black dark:text-white">
+              {show.title}
+            </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 line-clamp-2">
               {show.synopsis}
             </p>
@@ -98,9 +110,13 @@ export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, 
                     <div className="text-xs text-slate-600 dark:text-slate-400">
                       {localEpisodes} / {total} eps
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">{percent}%</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                      {percent}%
+                    </div>
                     {item.status === "completed" && (
-                      <span className="ml-2 px-2 py-0.5 rounded-full bg-green-600 text-white text-xs">Completed</span>
+                      <span className="ml-2 px-2 py-0.5 rounded-full bg-green-600 text-white text-xs">
+                        Completed
+                      </span>
                     )}
                   </div>
 
@@ -113,7 +129,12 @@ export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, 
                       aria-valuemin={0}
                       aria-valuemax={100}
                     >
-                      <div className={`h-full ${percent > 0 ? "bg-indigo-500" : "bg-transparent"}`} style={{ width: "100%" }} />
+                      <div
+                        className={`h-full ${
+                          percent > 0 ? "bg-indigo-500" : "bg-transparent"
+                        }`}
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   </div>
                 </>
@@ -140,7 +161,9 @@ export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, 
                 <input
                   type="number"
                   value={localEpisodes}
-                  onChange={(e) => setLocalEpisodes(Math.max(0, Number(e.target.value || 0)))}
+                  onChange={(e) =>
+                    setLocalEpisodes(Math.max(0, Number(e.target.value || 0)))
+                  }
                   onBlur={onInputBlur}
                   onKeyDown={onInputKey}
                   min={0}
@@ -159,7 +182,9 @@ export default function WatchlistItem({ item, onUpdateStatus, onUpdateEpisodes, 
                 </button>
 
                 <button
-                  onClick={() => handleSetEpisodes(hasTotal ? total : localEpisodes)}
+                  onClick={() =>
+                    handleSetEpisodes(hasTotal ? total : localEpisodes)
+                  }
                   disabled={updating || busy}
                   className="px-3 py-1 rounded-md bg-indigo-600 text-white text-sm"
                 >

@@ -1,4 +1,3 @@
-// src/pages/Clubs.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -85,9 +84,7 @@ export default function Clubs() {
       const updatedClub = await joinClub(clubId);
       // refresh this club in state
       setClubs((cur) =>
-        cur.map((c) =>
-          String(c._id) === String(clubId) ? updatedClub : c
-        )
+        cur.map((c) => (String(c._id) === String(clubId) ? updatedClub : c))
       );
     } catch (err) {
       console.error("Join failed:", err);
@@ -197,7 +194,7 @@ export default function Clubs() {
             const joined =
               Array.isArray(c.members) &&
               c.members.some((m) => {
-                const memberId = typeof m === "object" ? (m._id || m.id) : m;
+                const memberId = typeof m === "object" ? m._id || m.id : m;
                 return String(memberId) === String(myId);
               });
 

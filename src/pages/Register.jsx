@@ -1,4 +1,3 @@
-// src/pages/Register.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -31,7 +30,9 @@ export default function Register() {
         <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
           Create account
         </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">register with your email and password</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+          register with your email and password
+        </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <div className="text-sm text-red-600">{error}</div>}
           <input

@@ -1,4 +1,3 @@
-// src/components/AnimeCard.jsx
 import { useNavigate } from "react-router-dom";
 
 function getIdFromObj(obj) {

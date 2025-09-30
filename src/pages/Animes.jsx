@@ -1,4 +1,3 @@
-// src/pages/Animes.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import api from "../api/api";
 import SearchBar from "../components/SearchBar";

@@ -1,4 +1,3 @@
-// src/pages/Watchlist.jsx
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import {
@@ -22,12 +21,6 @@ function getIdFromObj(obj) {
   return null;
 }
 
-/**
- * Watchlist page
- * - fetches watchlist (protected endpoint)
- * - normalizes each item to: { id, status, show: {...}, episodesWatched }
- * - supports optimistic update/remove and episodes tracking
- */
 export default function Watchlist() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -47,19 +40,30 @@ export default function Watchlist() {
       const normalized = await Promise.all(
         list.map(async (it) => {
           const itemId =
-            getIdFromObj(it._id) || getIdFromObj(it.id) || getIdFromObj(it._id?.$oid) || null;
+            getIdFromObj(it._id) ||
+            getIdFromObj(it.id) ||
+            getIdFromObj(it._id?.$oid) ||
+            null;
 
           const status = (
             it.status ??
             it.watchStatus ??
             it.state ??
             "plan-to-watch"
-          ).toString().toLowerCase();
+          )
+            .toString()
+            .toLowerCase();
 
           // episodesWatched may be present on the item
           const episodesWatched =
-            Number(it.episodesWatched ?? it.episodes_watched ?? it.episodes ?? it.episodesWatched === 0 ? it.episodesWatched : undefined) ??
-            0;
+            Number(
+              it.episodesWatched ??
+                it.episodes_watched ??
+                it.episodes ??
+                it.episodesWatched === 0
+                ? it.episodesWatched
+                : undefined
+            ) ?? 0;
 
           // prefer populated show object (we expect watchlist controller to populate showId)
           let showObj = it.show ?? it.showId ?? it.show_id ?? null;
@@ -70,7 +74,11 @@ export default function Watchlist() {
               const sres = await api.get(`/shows/${getIdFromObj(showObj)}`);
               showObj = sres.data;
             } catch {
-              showObj = { _id: showObj, title: it.title ?? "Unknown", poster: it.poster ?? "" };
+              showObj = {
+                _id: showObj,
+                title: it.title ?? "Unknown",
+                poster: it.poster ?? "",
+              };
             }
           }
 
@@ -153,11 +161,16 @@ export default function Watchlist() {
     const next = items.map((it) => {
       if (it.id !== itemId) return it;
       // compute potential status change
-      const total = Number(it.show?.totalEpisodes ?? it.show?.totalEpisodes ?? NaN);
+      const total = Number(
+        it.show?.totalEpisodes ?? it.show?.totalEpisodes ?? NaN
+      );
       let newStatus = it.status;
       if (!Number.isNaN(total) && total > 0 && newEpisodes >= total) {
         newStatus = "completed";
-      } else if (it.status === "completed" && (Number.isNaN(total) || newEpisodes < total)) {
+      } else if (
+        it.status === "completed" &&
+        (Number.isNaN(total) || newEpisodes < total)
+      ) {
         // user reduced progress -> move away from completed
         newStatus = "watching";
       }
@@ -169,7 +182,10 @@ export default function Watchlist() {
       // find changed item to know whether we need to update status too
       const changed = next.find((i) => i.id === itemId);
       const body = { episodesWatched: Number(newEpisodes) };
-      if (changed && changed.status !== prev.find((p) => p.id === itemId)?.status) {
+      if (
+        changed &&
+        changed.status !== prev.find((p) => p.id === itemId)?.status
+      ) {
         body.status = changed.status;
       }
       await updateWatchlistItem(itemId, body);
@@ -210,8 +226,12 @@ export default function Watchlist() {
   return (
     <div className="p-6 md:p-10">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-black dark:text-white">My Watchlist</h1>
-        <div className="text-sm text-slate-600 dark:text-slate-400">{items.length} shows</div>
+        <h1 className="text-2xl font-bold text-black dark:text-white">
+          My Watchlist
+        </h1>
+        <div className="text-sm text-slate-600 dark:text-slate-400">
+          {items.length} shows
+        </div>
       </div>
 
       {items.length === 0 ? (

@@ -1,5 +1,4 @@
 export default function Footer() {
-
   const ACCENT_PALETTE = [
     { name: "Indigo", hex: "#6366F1" },
     { name: "Teal", hex: "#14B8A6" },

@@ -205,7 +205,9 @@ export default function AnimeDetails() {
             />
 
             <div className="text-white">
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold">{anime.title}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold">
+                {anime.title}
+              </h1>
               <p className="mt-2 text-slate-200">
                 {anime.releaseYear} {"\u00B7"} {anime.totalEpisodes} Episodes
               </p>

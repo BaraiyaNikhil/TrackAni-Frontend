@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -32,8 +31,14 @@ function StatCard({ title, value, hint }) {
     <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700">
       <div className="text-sm text-slate-500 dark:text-slate-300">{title}</div>
       <div className="mt-2 flex items-baseline gap-3">
-        <div className="text-2xl font-bold text-black dark:text-white">{value}</div>
-        {hint && <div className="text-xs text-slate-500 dark:text-slate-400">{hint}</div>}
+        <div className="text-2xl font-bold text-black dark:text-white">
+          {value}
+        </div>
+        {hint && (
+          <div className="text-xs text-slate-500 dark:text-slate-400">
+            {hint}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -63,7 +68,9 @@ export default function Dashboard() {
             getIdFromObj(it._id?.$oid) ||
             null;
 
-          const status = normalizeStatus(it.status ?? it.watchStatus ?? it.state ?? "plan-to-watch");
+          const status = normalizeStatus(
+            it.status ?? it.watchStatus ?? it.state ?? "plan-to-watch"
+          );
 
           const episodesWatched =
             it.episodesWatched ??
@@ -80,7 +87,11 @@ export default function Dashboard() {
               const sres = await api.get(`/shows/${getIdFromObj(showObj)}`);
               showObj = sres.data;
             } catch {
-              showObj = { _id: showObj, title: it.title ?? "Unknown", poster: it.poster ?? "" };
+              showObj = {
+                _id: showObj,
+                title: it.title ?? "Unknown",
+                poster: it.poster ?? "",
+              };
             }
           }
 
@@ -191,13 +202,26 @@ export default function Dashboard() {
     }
     const totalEps = Number(target.show?.totalEpisodes || 0);
     // if newEp exceeds total episodes, clamp
-    const clamped = Number.isFinite(totalEps) && totalEps > 0 ? Math.min(newEp, totalEps) : newEp;
-    const newStatus = totalEps && clamped >= totalEps ? "completed" : target.status;
+    const clamped =
+      Number.isFinite(totalEps) && totalEps > 0
+        ? Math.min(newEp, totalEps)
+        : newEp;
+    const newStatus =
+      totalEps && clamped >= totalEps ? "completed" : target.status;
 
     // optimistic update
-    setItems((cur) => cur.map((it) => (it.id === itemId ? { ...it, episodesWatched: clamped, status: newStatus } : it)));
+    setItems((cur) =>
+      cur.map((it) =>
+        it.id === itemId
+          ? { ...it, episodesWatched: clamped, status: newStatus }
+          : it
+      )
+    );
     try {
-      await updateWatchlistItem(itemId, { episodesWatched: clamped, status: newStatus });
+      await updateWatchlistItem(itemId, {
+        episodesWatched: clamped,
+        status: newStatus,
+      });
     } catch (err) {
       console.error("Failed to update episodes:", err);
       alert("Could not update progress. Try again.");
@@ -210,7 +234,9 @@ export default function Dashboard() {
   const changeStatus = async (itemId, newStatus) => {
     setBusyItem(itemId);
     const prev = items;
-    setItems((cur) => cur.map((it) => (it.id === itemId ? { ...it, status: newStatus } : it)));
+    setItems((cur) =>
+      cur.map((it) => (it.id === itemId ? { ...it, status: newStatus } : it))
+    );
     try {
       await updateWatchlistItem(itemId, { status: newStatus });
     } catch (err) {
@@ -238,7 +264,10 @@ export default function Dashboard() {
     }
   };
 
-  const watchingList = useMemo(() => items.filter((it) => it.status === "watching"), [items]);
+  const watchingList = useMemo(
+    () => items.filter((it) => it.status === "watching"),
+    [items]
+  );
   const recentAdds = useMemo(() => [...items].slice(0, 6), [items]);
 
   if (loading) {
@@ -255,25 +284,56 @@ export default function Dashboard() {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-4">
           <div className="h-20 w-20 rounded-full bg-indigo-500 text-white flex items-center justify-center text-3xl font-bold">
-            {user?.username?.[0]?.toUpperCase() ?? user?.email?.[0]?.toUpperCase() ?? "U"}
+            {user?.username?.[0]?.toUpperCase() ??
+              user?.email?.[0]?.toUpperCase() ??
+              "U"}
           </div>
           <div>
-            <div className="text-xl font-bold text-black dark:text-white">{user?.username ?? user?.email}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">Member since {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "—"}</div>
+            <div className="text-xl font-bold text-black dark:text-white">
+              {user?.username ?? user?.email}
+            </div>
+            <div className="text-sm text-slate-600 dark:text-slate-400">
+              Member since{" "}
+              {user?.createdAt
+                ? new Date(user.createdAt).toLocaleDateString()
+                : "—"}
+            </div>
           </div>
         </div>
 
         <div className="flex gap-3">
-          <button onClick={() => navigate("/profile/edit")} className="px-4 py-2 rounded-xl bg-indigo-600 text-white">Edit Profile</button>
-          <button onClick={fetchWatchlist} className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700">Refresh</button>
+          <button
+            onClick={() => navigate("/profile/edit")}
+            className="px-4 py-2 rounded-xl bg-indigo-600 text-white"
+          >
+            Edit Profile
+          </button>
+          <button
+            onClick={fetchWatchlist}
+            className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700"
+          >
+            Refresh
+          </button>
         </div>
       </div>
 
       {/* Stats grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <StatCard title="Shows on Watchlist" value={stats.total} hint={`${stats.watching} watching`} />
-        <StatCard title="Completed" value={stats.completed} hint={`${stats.percentWatched}% overall progress`} />
-        <StatCard title="Episodes Watched" value={stats.episodesWatched} hint={`${stats.totalEpisodes} total episodes`} />
+        <StatCard
+          title="Shows on Watchlist"
+          value={stats.total}
+          hint={`${stats.watching} watching`}
+        />
+        <StatCard
+          title="Completed"
+          value={stats.completed}
+          hint={`${stats.percentWatched}% overall progress`}
+        />
+        <StatCard
+          title="Episodes Watched"
+          value={stats.episodesWatched}
+          hint={`${stats.totalEpisodes} total episodes`}
+        />
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
@@ -281,49 +341,90 @@ export default function Dashboard() {
         <div className="md:col-span-2 space-y-6">
           <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-black dark:text-white">Watching ({watchingList.length})</h2>
-              <div className="text-sm text-slate-500 dark:text-slate-400">Keep track of episodes</div>
+              <h2 className="text-lg font-semibold text-black dark:text-white">
+                Watching ({watchingList.length})
+              </h2>
+              <div className="text-sm text-slate-500 dark:text-slate-400">
+                Keep track of episodes
+              </div>
             </div>
 
             {watchingList.length === 0 ? (
-              <div className="text-slate-600 dark:text-slate-400 p-6 rounded-md bg-slate-50 dark:bg-slate-900">You are not currently watching any shows. Add some from their details pages!</div>
+              <div className="text-slate-600 dark:text-slate-400 p-6 rounded-md bg-slate-50 dark:bg-slate-900">
+                You are not currently watching any shows. Add some from their
+                details pages!
+              </div>
             ) : (
               <div className="space-y-4">
                 {watchingList.map((it) => {
                   const totalEps = Number(it.show?.totalEpisodes || 0);
-                  const pct = totalEps > 0 ? Math.round((it.episodesWatched / totalEps) * 100) : 0;
+                  const pct =
+                    totalEps > 0
+                      ? Math.round((it.episodesWatched / totalEps) * 100)
+                      : 0;
                   return (
-                    <div key={it.id || it.show?._id} className="flex gap-4 items-center bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-700">
-                      <img src={it.show.poster} alt={it.show.title} className="w-20 h-28 object-cover rounded-md cursor-pointer" onClick={() => navigate(`/animes/${getIdFromObj(it.show._id)}`)} />
+                    <div
+                      key={it.id || it.show?._id}
+                      className="flex gap-4 items-center bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-700"
+                    >
+                      <img
+                        src={it.show.poster}
+                        alt={it.show.title}
+                        className="w-20 h-28 object-cover rounded-md cursor-pointer"
+                        onClick={() =>
+                          navigate(`/animes/${getIdFromObj(it.show._id)}`)
+                        }
+                      />
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <div>
-                            <div className="font-semibold text-black dark:text-white">{it.show.title}</div>
-                            <div className="text-xs text-slate-500 dark:text-slate-400">{it.show.releaseYear ?? ""} • {it.show.genres?.slice(0,3).join(", ")}</div>
+                            <div className="font-semibold text-black dark:text-white">
+                              {it.show.title}
+                            </div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">
+                              {it.show.releaseYear ?? ""} •{" "}
+                              {it.show.genres?.slice(0, 3).join(", ")}
+                            </div>
                           </div>
-                          <div className="text-sm text-slate-500 dark:text-slate-400">{pct}%</div>
+                          <div className="text-sm text-slate-500 dark:text-slate-400">
+                            {pct}%
+                          </div>
                         </div>
 
                         <div className="mt-3">
                           <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                            <div style={{ width: `${Math.min(Math.max(pct, 0), 100)}%` }} className="h-full bg-indigo-600 dark:bg-indigo-400 rounded-full transition-all" />
+                            <div
+                              style={{
+                                width: `${Math.min(Math.max(pct, 0), 100)}%`,
+                              }}
+                              className="h-full bg-indigo-600 dark:bg-indigo-400 rounded-full transition-all"
+                            />
                           </div>
 
                           <div className="mt-2 flex items-center gap-3">
-                            <div className="text-sm text-slate-700 dark:text-slate-300">{it.episodesWatched}/{totalEps || "?"} eps</div>
+                            <div className="text-sm text-slate-700 dark:text-slate-300">
+                              {it.episodesWatched}/{totalEps || "?"} eps
+                            </div>
 
                             {/* episode controls */}
                             <div className="flex items-center gap-2 ml-2">
                               <button
                                 disabled={busyItem === it.id}
-                                onClick={() => updateEpisodes(it.id, Math.max(0, it.episodesWatched - 1))}
+                                onClick={() =>
+                                  updateEpisodes(
+                                    it.id,
+                                    Math.max(0, it.episodesWatched - 1)
+                                  )
+                                }
                                 className="px-2 py-1 rounded-md border text-sm"
                               >
                                 -
                               </button>
                               <button
                                 disabled={busyItem === it.id}
-                                onClick={() => updateEpisodes(it.id, it.episodesWatched + 1)}
+                                onClick={() =>
+                                  updateEpisodes(it.id, it.episodesWatched + 1)
+                                }
                                 className="px-2 py-1 rounded-md border text-sm"
                               >
                                 +
@@ -358,17 +459,35 @@ export default function Dashboard() {
 
           {/* Recent & Completed list */}
           <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-            <h3 className="font-semibold text-black dark:text-white mb-3">Recent additions</h3>
+            <h3 className="font-semibold text-black dark:text-white mb-3">
+              Recent additions
+            </h3>
             {recentAdds.length === 0 ? (
-              <div className="text-slate-600 dark:text-slate-400">No recent activity.</div>
+              <div className="text-slate-600 dark:text-slate-400">
+                No recent activity.
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {recentAdds.map((it) => (
-                  <div key={it.id || it.show?._id} className="flex items-center gap-3 p-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer" onClick={() => navigate(`/animes/${getIdFromObj(it.show._id)}`)}>
-                    <img src={it.show.poster} alt={it.show.title} className="w-12 h-16 object-cover rounded-md" />
+                  <div
+                    key={it.id || it.show?._id}
+                    className="flex items-center gap-3 p-2 rounded-md hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer"
+                    onClick={() =>
+                      navigate(`/animes/${getIdFromObj(it.show._id)}`)
+                    }
+                  >
+                    <img
+                      src={it.show.poster}
+                      alt={it.show.title}
+                      className="w-12 h-16 object-cover rounded-md"
+                    />
                     <div>
-                      <div className="font-medium text-black dark:text-white">{it.show.title}</div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">{it.status} • {it.episodesWatched} eps</div>
+                      <div className="font-medium text-black dark:text-white">
+                        {it.show.title}
+                      </div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                        {it.status} • {it.episodesWatched} eps
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -380,20 +499,31 @@ export default function Dashboard() {
         {/* Right column - top genres & recommendations */}
         <aside className="space-y-6">
           <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-            <h4 className="font-semibold text-black dark:text-white mb-2">Top genres</h4>
+            <h4 className="font-semibold text-black dark:text-white mb-2">
+              Top genres
+            </h4>
             {stats.topGenres.length === 0 ? (
-              <div className="text-slate-600 dark:text-slate-400">No genres yet.</div>
+              <div className="text-slate-600 dark:text-slate-400">
+                No genres yet.
+              </div>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {stats.topGenres.map((g) => (
-                  <span key={g} className="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 text-sm">{g}</span>
+                  <span
+                    key={g}
+                    className="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 text-sm"
+                  >
+                    {g}
+                  </span>
                 ))}
               </div>
             )}
           </div>
 
           <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-            <h4 className="font-semibold text-black dark:text-white mb-2">Recommendations</h4>
+            <h4 className="font-semibold text-black dark:text-white mb-2">
+              Recommendations
+            </h4>
             <Recommendations items={items} />
           </div>
         </aside>
@@ -419,17 +549,25 @@ function Recommendations({ items }) {
             counts[g] = (counts[g] || 0) + 1;
           });
         });
-        const top = Object.keys(counts).sort((a, b) => counts[b] - counts[a]).slice(0, 2);
+        const top = Object.keys(counts)
+          .sort((a, b) => counts[b] - counts[a])
+          .slice(0, 2);
 
         // if no genres, just pick recent trending shows
         let url = "/shows";
-        const q = top.length ? `?genres=${encodeURIComponent(top.join(","))}` : "";
+        const q = top.length
+          ? `?genres=${encodeURIComponent(top.join(","))}`
+          : "";
         // We'll fetch /shows and filter client-side (safer across backends)
         const res = await api.get("/shows");
-        const all = Array.isArray(res.data) ? res.data : res.data.shows ?? res.data;
+        const all = Array.isArray(res.data)
+          ? res.data
+          : res.data.shows ?? res.data;
         if (!mounted) return;
         // filter out those already in user's items
-        const owned = new Set(items.map((it) => String(it.show?._id ?? it.show?.id)));
+        const owned = new Set(
+          items.map((it) => String(it.show?._id ?? it.show?.id))
+        );
         const filtered = (all || [])
           .filter((s) => !owned.has(String(s._id ?? s.id)))
           .filter((s) => {
@@ -456,17 +594,29 @@ function Recommendations({ items }) {
   }
 
   if (!recs || recs.length === 0) {
-    return <div className="text-slate-600 dark:text-slate-400">No recommendations yet — add more shows to your list.</div>;
+    return (
+      <div className="text-slate-600 dark:text-slate-400">
+        No recommendations yet — add more shows to your list.
+      </div>
+    );
   }
 
   return (
     <div className="space-y-3">
       {recs.map((r) => (
         <div key={r._id || r.id} className="flex items-center gap-3">
-          <img src={r.poster} alt={r.title} className="w-12 h-16 object-cover rounded-md" />
+          <img
+            src={r.poster}
+            alt={r.title}
+            className="w-12 h-16 object-cover rounded-md"
+          />
           <div className="flex-1">
-            <div className="text-sm font-medium text-black dark:text-white">{r.title}</div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">{(r.genres || []).slice(0, 2).join(", ")}</div>
+            <div className="text-sm font-medium text-black dark:text-white">
+              {r.title}
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              {(r.genres || []).slice(0, 2).join(", ")}
+            </div>
           </div>
         </div>
       ))}

@@ -1,12 +1,5 @@
-// src/pages/About.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-
-/**
- * About page — friendly, internship-ready placeholder
- * - Drop-in: src/pages/About.jsx
- * - Uses Tailwind classes, supports dark mode (matches project)
- */
 
 const FEATURES = [
   {
@@ -68,10 +61,15 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-                About <span className="text-indigo-600 dark:text-indigo-400">TrackAni</span>
+                About{" "}
+                <span className="text-indigo-600 dark:text-indigo-400">
+                  TrackAni
+                </span>
               </h1>
               <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-xl">
-                Built with ❤️ during an internship project. I am obsessed with making tracking and discovering anime delightful, simple, and social.
+                Built with ❤️ during an internship project. I am obsessed with
+                making tracking and discovering anime delightful, simple, and
+                social.
               </p>
 
               <div className="flex items-center gap-3">
@@ -86,15 +84,21 @@ export default function AboutUs() {
               <div className="mt-6 flex gap-6">
                 <div>
                   <div className="text-3xl font-bold">5k+</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Active users</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Active users
+                  </div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold">2k+</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Shows tracked</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Shows tracked
+                  </div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold">100+</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Clubs & posts</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Clubs & posts
+                  </div>
                 </div>
               </div>
             </div>
@@ -107,25 +111,31 @@ export default function AboutUs() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">TrackAni</h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-300">A tiny place to track your favorite anime & shows.</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-300">
+                    A tiny place to track your favorite anime & shows.
+                  </p>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
                 {FEATURES.map((f) => (
-                  <div key={f.title} className="p-3 rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                  <div
+                    key={f.title}
+                    className="p-3 rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
+                  >
                     <div className="flex items-start gap-3">
                       <div className="text-2xl">{f.icon}</div>
                       <div>
                         <div className="text-sm font-semibold">{f.title}</div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">{f.desc}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">
+                          {f.desc}
+                        </div>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -136,25 +146,35 @@ export default function AboutUs() {
           <div className="md:col-span-2 rounded-xl p-6 bg-white dark:bg-slate-800 shadow">
             <h2 className="text-2xl font-semibold mb-2">Our mission</h2>
             <p className="text-slate-600 dark:text-slate-300">
-              To make anime tracking joyful — not a chore. We focus on a clean reading experience, useful social features (clubs & posts), and a watchlist that actually helps you finish shows.
+              To make anime tracking joyful — not a chore. We focus on a clean
+              reading experience, useful social features (clubs & posts), and a
+              watchlist that actually helps you finish shows.
             </p>
 
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="rounded-lg p-4 border border-slate-100 dark:border-slate-700">
                 <div className="text-sm font-semibold">Simplicity</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Easy to use, easy to understand.</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  Easy to use, easy to understand.
+                </div>
               </div>
               <div className="rounded-lg p-4 border border-slate-100 dark:border-slate-700">
                 <div className="text-sm font-semibold">Reliability</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Your watchlist is safe & consistent.</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  Your watchlist is safe & consistent.
+                </div>
               </div>
               <div className="rounded-lg p-4 border border-slate-100 dark:border-slate-700">
                 <div className="text-sm font-semibold">Community</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Clubs, posts, and healthy discussions.</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  Clubs, posts, and healthy discussions.
+                </div>
               </div>
               <div className="rounded-lg p-4 border border-slate-100 dark:border-slate-700">
                 <div className="text-sm font-semibold">Learning</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Designed for interns — ship small, learn big.</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  Designed for interns — ship small, learn big.
+                </div>
               </div>
             </div>
           </div>
@@ -162,13 +182,26 @@ export default function AboutUs() {
           <aside className="rounded-xl p-6 bg-slate-100 dark:bg-slate-800 shadow">
             <h3 className="text-lg font-semibold mb-3">Quick facts</h3>
             <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <li><strong>Founded:</strong> Internship Project</li>
-              <li><strong>Stack:</strong> React, Tailwind, Node, MongoDB</li>
-              <li><strong>Auth:</strong> JWT-based</li>
-              <li><strong>API base:</strong> <code>VITE_API_BASE_URL</code></li>
+              <li>
+                <strong>Founded:</strong> Internship Project
+              </li>
+              <li>
+                <strong>Stack:</strong> React, Tailwind, Node, MongoDB
+              </li>
+              <li>
+                <strong>Auth:</strong> JWT-based
+              </li>
+              <li>
+                <strong>API base:</strong> <code>VITE_API_BASE_URL</code>
+              </li>
             </ul>
             <div className="mt-6">
-              <a href="#contact" className="inline-block px-4 py-2 rounded-md bg-indigo-600 text-white">Get in touch</a>
+              <a
+                href="#contact"
+                className="inline-block px-4 py-2 rounded-md bg-indigo-600 text-white"
+              >
+                Get in touch
+              </a>
             </div>
           </aside>
         </div>
@@ -182,7 +215,9 @@ export default function AboutUs() {
             <div className="mt-1 text-indigo-600 font-bold">Q1</div>
             <div>
               <div className="font-semibold">Improved recommendations</div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">Personalized suggestions based on your watch history.</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Personalized suggestions based on your watch history.
+              </div>
             </div>
           </div>
 
@@ -190,7 +225,9 @@ export default function AboutUs() {
             <div className="mt-1 text-indigo-600 font-bold">Q2</div>
             <div>
               <div className="font-semibold">Mobile-first polish</div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">Better responsive experiences and accessibility improvements.</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Better responsive experiences and accessibility improvements.
+              </div>
             </div>
           </div>
 
@@ -198,7 +235,9 @@ export default function AboutUs() {
             <div className="mt-1 text-indigo-600 font-bold">Q3</div>
             <div>
               <div className="font-semibold">Club features v2</div>
-              <div className="text-sm text-slate-600 dark:text-slate-400">Rich posts, polls, and moderation tools.</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">
+                Rich posts, polls, and moderation tools.
+              </div>
             </div>
           </div>
         </div>
@@ -206,7 +245,8 @@ export default function AboutUs() {
 
       {/* small footer-like bit */}
       <footer className="mt-12 py-6 text-center text-sm text-slate-500 dark:text-slate-400">
-        © {new Date().getFullYear()} TrackAni — Internship Project. Made with ❤️.
+        © {new Date().getFullYear()} TrackAni — Internship Project. Made with
+        ❤️.
       </footer>
     </div>
   );

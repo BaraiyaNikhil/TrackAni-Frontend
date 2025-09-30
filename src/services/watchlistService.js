@@ -1,4 +1,3 @@
-// src/services/watchlistService.js
 import api from "../api/api";
 
 export async function getWatchlist() {
@@ -7,7 +6,6 @@ export async function getWatchlist() {
 }
 
 export async function addToWatchlist(showId, status = "plan-to-watch") {
-  // backend expects { showId, status }
   const body = { showId, status };
   const res = await api.post("/watchlist", body);
   return res.data;
